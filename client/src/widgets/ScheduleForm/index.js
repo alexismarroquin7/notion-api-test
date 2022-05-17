@@ -157,6 +157,10 @@ export const ScheduleForm = ({props}) => {
           start: {
             ...values.date.start,
             date: value
+          },
+          end: {
+            ...values.date.end,
+            date: value
           }
         }
       });
@@ -248,10 +252,6 @@ export const ScheduleForm = ({props}) => {
   const handleSubmit = e => {
     e.preventDefault();
     const createSchedule = async () => {
-      // const startDate = new Date(`${values.date.start} ${values.date.start.hr}:${values.date.start.min} ${values.date.start.timeOfDay}`)
-      // console.log('🔥', startDate);
-      // console.log('💦', startDate.toISOString());
-
       try {
         const res = await axiosInstance()
         .post(
@@ -259,16 +259,17 @@ export const ScheduleForm = ({props}) => {
           {
             employee_id: values.employee.id,
             date: {
-              start: `${values.date.start}T`, // 2011-10-05T14:48:00.000Z format
+              start: `${values.date.start.date}T${values.date.start.timeOfDay === 'PM' ? `${Number(values.date.start.hr) + 12}` : `${values.date.start.hr}`}:${Number(values.date.start.min) < 10 ? `0${values.date.start.min}` : `${values.date.start.min}`}:00.000Z`, // 2011-10-05T14:48:00.000Z format
+              end: `${values.date.end.date}T${values.date.end.timeOfDay === 'PM' ? `${Number(values.date.end.hr) + 12}` : `${values.date.end.hr}`}:${Number(values.date.end.min) < 10 ? `0${values.date.end.min}` : `${values.date.end.min}`}:00.000Z`, // 2011-10-05T14:48:00.000Z format
               // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
-              // end: Date()
+              time_zone: 'America/Los_Angeles'
             }
           }
         );
         console.log(res);
 
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data);
       }
 
     }
@@ -348,7 +349,7 @@ export const ScheduleForm = ({props}) => {
           name="endDate"
           value={values.date.end.date}
           onChange={handleChange}
-          min={values.date.end.date}
+          min={values.date.start.date}
         />
       </div>
 

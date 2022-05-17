@@ -73,7 +73,8 @@ const create = async ({ employee_id, date }) => {
       Date: {
         date: {
           start: date.start,
-          end: date.end
+          end: date.end,
+          time_zone: date.time_zone
         }
       }
     }
