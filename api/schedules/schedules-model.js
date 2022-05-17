@@ -41,6 +41,48 @@ const findAll = async () => {
   })
 }
 
+const findByScheduleId = async (schedule_id) => {
+  const schedules = await findAll();
+
+  const schedule = schedules.results.filter(s => s.id === schedule_id);
+  
+  const match = schedule.length === 1;
+  
+  if(match){
+    return schedule[0];
+  } else {
+    return null;
+  }
+  
+}
+
+const create = async ({ employee_id, date }) => {
+  const schedule = await notion.pages.create({
+    parent: {
+      database_id: process.env.NOTION_SCHEDULES_DB_ID
+    },
+    properties: {
+      Employee: {
+        relation: [
+          {
+            id: employee_id
+          }
+        ]
+      },
+      
+      Date: {
+        date: {
+          start: date.start,
+          end: date.end
+        }
+      }
+    }
+  });
+
+  return schedule;
+}
+
 module.exports = {
-  findAll
+  findAll,
+  create
 }

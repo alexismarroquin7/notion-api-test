@@ -4,6 +4,7 @@ import { EmployeeForm } from './widgets';
 
 import { Routes, Route } from "react-router";
 import { Home, Schedules } from './pages';
+import { NewSchedule } from './pages/new/schedules';
 
 function App() {
 
@@ -15,6 +16,12 @@ function App() {
           path="/new/employee"
           element={
             <EmployeeForm/>
+          }
+        />
+        <Route
+          path="/new/schedule"
+          element={
+            <NewSchedule/>
           }
         />
         <Route
