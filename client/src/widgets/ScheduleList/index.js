@@ -52,20 +52,8 @@ function formatDate (timestamp) {
       customString += `${d < 10 ? '0' : ''}${d}, `;
       
     } else {
-      console.log(
-        '[1]',
-        {customString, month}
-      )
       customString += `${month < 10 ? '0' : ''}${month}-`
-      console.log(
-        '[2]',
-        customString
-      )
       customString += `${d < 10 ? '0' : ''}${d}-`;
-      console.log(
-        '[3]',
-        customString
-      )
 
     }
     
@@ -121,10 +109,18 @@ function formatDate (timestamp) {
   }
 }
 
-export const ScheduleList = ({schedules}) => {
+
+export const ScheduleList = ({schedules, archiveSchedule}) => {
   
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexFlow: 'column wrap',
+        alignItems: "center",
+        gap: "1rem"
+      }}
+    >
       {schedules.map(schedule => {
         const { properties: prop } = schedule;
         
@@ -132,17 +128,36 @@ export const ScheduleList = ({schedules}) => {
         
         const startDate = formatDate(prop.Date.date.start);
         const endDate = formatDate(prop.Date.date.end);
-        
-        console.log('😃', prop.Date.date.start);
-        console.log('👍', startDate);
 
         return (
           <div
             key={schedule.id} 
             style={{
-              border: "1px solid black"
+              width: "90%",
+              display: "flex",
+              flexFlow: 'column wrap',
+              border: "1px solid black",
+              borderRadius: "35px"
             }}
           >
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexFlow: 'row wrap',
+                justifyContent: "flex-end"
+              }}
+            >
+              <button
+                onClick={() => {
+                  archiveSchedule(schedule.id);
+                }}
+              >x</button>
+            </div>
+            <p>
+              {employee.properties.Name.title[0].text.content}
+            </p>
+
             <p>
               start: {startDate.asString({
                 clock: '12hr',
@@ -163,10 +178,7 @@ export const ScheduleList = ({schedules}) => {
             </p>
 
             
-            <p>
-              {employee.properties.Name.title[0].text.content}
-            </p>
-
+            
           </div>
         )
       })}

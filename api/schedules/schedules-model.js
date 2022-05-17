@@ -83,7 +83,18 @@ const create = async ({ employee_id, date }) => {
   return schedule;
 }
 
+const update = async (schedule_id, changes) => {
+  const schedule = await notion.pages.update({
+    page_id: schedule_id,
+    ...changes,
+    archived: changes.archived ? true : false 
+  });
+
+  return schedule;
+}
+
 module.exports = {
   findAll,
+  update,
   create
 }
